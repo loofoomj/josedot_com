@@ -1,0 +1,2 @@
+class Jose < ApplicationRecord
+end

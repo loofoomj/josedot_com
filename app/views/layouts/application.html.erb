@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JoseApp</title>
+    <%= csrf_meta_tags %>
+
+    <!-- local -->
+    <!-- <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %> -->
+
+    <%= render :file => 'common/header' %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

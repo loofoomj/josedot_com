@@ -1,0 +1,69 @@
+
+<script>
+  var nav = null;
+	var map;
+	var marker;
+	/* 현재 위치(위도/경도)를 받아오기 위한 부분 */
+	$(function() {
+		if (nav == null) {
+			nav = window.navigator;
+		}
+		if (nav != null) {
+			var geoloc = nav.geolocation;
+			if (geoloc != null) {
+				/* Callback 성공 시, successCallback() 호출 */
+				geoloc.getCurrentPosition(successCallback);
+			} else {
+				alert("geolocation not supported");
+			}
+		} else {
+			alert("Navigator not found");
+		}
+	});
+
+	function successCallback(position) {
+		/* 위도 */ var latitude = position.coords.latitude;
+		/* 경도 */ var longitude = position.coords.longitude;
+		/* Google Map으로 위도와 경도 초기화 */
+		initMap(latitude, longitude);
+	}
+
+
+  function initMap(latitude, longitude) {
+    var lat = parseFloat(latitude);
+    var lng = parseFloat(longitude);
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: lat, lng: lng},
+      zoom: 15
+    });
+    var markLocation = {lat: lat, lng: lng};
+    init_setMarkers(markLocation, map);
+  }
+
+  function init_setMarkers(markLocation, map){
+    var image = {
+      url: '<%=$STATIC_IMAGE_PATH%>marker.png',
+      // This marker is 20 pixels wide by 32 pixels high.
+      scaledSize: new google.maps.Size(32, 32)
+      // size: new google.maps.Size(20, 32),
+      // origin: new google.maps.Point(0, 0),
+      // anchor: new google.maps.Point(0, 32)
+    };
+    var init_marker = new google.maps.Marker({
+      icon: image,
+      position: markLocation,
+      title: '현재 위치!'
+    });
+    init_marker.setMap(map);
+    var content = "이곳은 상세정보를 알려주는 곳 이에요"; // 말풍선 안에 들어갈 내용
+
+    var infowindow = new google.maps.InfoWindow({ content: content});
+
+    google.maps.event.addListener(init_marker, "click", function() {
+        infowindow.open(map,init_marker);
+    });
+  }
+
+
+</script>
+<%= render :file => 'pages/front_page' %>
